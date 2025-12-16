@@ -21,9 +21,26 @@
    python app.py "手机号13812345678需要掩码" --config custom_config.json
    ```
 
+### 安装为可执行工具（pip）
+1. 在项目根目录安装：
+   ```bash
+   pip install .
+   ```
+2. 之后即可在任意目录使用命令行：
+   ```bash
+   geo-optimizer "写一段周末亲子活动"      # 默认执行 optimize
+   geo-optimizer preview --prompt "写一段上海美食探店脚本"
+   geo-optimizer prompt list
+   geo-optimizer publish stats
+   ```
+
 ### 运行 Web 前端 + 后端
 1. 安装依赖：`pip install -r requirements.txt`
-2. 启动服务：`python server.py`（默认监听 `http://0.0.0.0:8000`）
+2. 启动服务：
+   ```bash
+   python server.py           # 或 geo-optimizer-web
+   ```
+   默认监听 `http://0.0.0.0:8000`。
 3. 打开浏览器访问 `http://localhost:8000/`，即可在前端界面体验路由、合规、Prompt 库与发布队列。
 
 **可用 API**（均返回 JSON）：
@@ -32,14 +49,17 @@
 - `GET /api/publish`、`POST /api/publish`、`PATCH /api/publish/<id>`、`GET /api/publish/stats`
 
 ### 打包为 Windows EXE（可安装分发）
-1. Windows 环境安装 Python 3.9+ 与 `pip install -r requirements.txt pyinstaller`
-2. 在仓库根目录执行：
+1. Windows 环境安装 Python 3.9+，再执行：
    ```powershell
-   pyinstaller --noconfirm --clean --add-data "static;static" --add-data "geo_data;geo_data" server.py -n geo-optimizer
+   pip install -r requirements-dev.txt
    ```
-   - `static` 目录会被一并打包，EXE 启动后仍可直接访问前端页面。
+2. 一键打包（自动携带前端静态文件与 geo_data 目录）：
+   ```powershell
+   python -m installer.build_exe
+   ```
    - 生成文件位于 `dist/geo-optimizer/geo-optimizer.exe`，可直接运行。
-3. 如需自带示例数据，可将 `geo_data/` 复制到同目录或在打包时通过 `--add-data` 携带。
+   - 如需自定义输出目录：`python -m installer.build_exe --dist-path release`
+3. 打包后的 EXE 仍然会在 8000 端口暴露 Web UI，双击启动即可访问 `http://localhost:8000/`。
 
 ### 预览示例输出
 不带其他参数直接运行快速预览，或替换自定义提示词：

@@ -18,10 +18,18 @@ from geo_optimizer.optimizer import GeoOptimizer
 from geo_optimizer.prompt_library import PromptLibrary
 from geo_optimizer.publishing import PublishingBoard
 
-app = Flask(__name__, static_folder="static", static_url_path="/static")
+STATIC_DIR = Path(__file__).resolve().parent / "geo_optimizer" / "static"
+
+app = Flask(__name__, static_folder=str(STATIC_DIR), static_url_path="/static")
 
 prompt_library = PromptLibrary()
 publishing_board = PublishingBoard()
+
+
+def create_app() -> Flask:
+    """Factory mainly for packaging/entrypoint use."""
+
+    return app
 
 
 def _build_config(payload: Dict[str, object]) -> OptimizerConfig:
@@ -162,5 +170,11 @@ def index():
     return send_from_directory(static_dir, "index.html")
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Start the built-in web server."""
+
     app.run(host="0.0.0.0", port=8000, debug=False)
+
+
+if __name__ == "__main__":
+    main()
