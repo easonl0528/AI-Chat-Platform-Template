@@ -1,6 +1,6 @@
 # GEO 优化工具（面向中国大陆大模型）
 
-本项目提供一个可直接运行的 GEO 优化工具，用于在中国大陆环境下对接本土大模型（如豆包、文心一言、通义千问等）。它实现了路由、合规、提示词重写、缓存、Prompt 管理与手动发布看板等核心能力，帮助你快速落地低延迟、高可靠的多模型调用方案。
+本项目提供一个可直接运行的 GEO 优化工具，用于在中国大陆环境下对接本土大模型（如豆包、文心一言、通义千问等）。它实现了路由、合规、提示词重写、缓存、Prompt 管理与手动发布看板等核心能力，帮助你快速落地低延迟、高可靠的多模型调用方案；同时提供可运行的 Web 前端/后端示例（`server.py` + `static/`），并给出了打包为 Windows EXE 的指令。
 
 ## 功能概览
 - **多模型路由**：基于延迟、成功率与成本的评分机制，自动选择最优可用的模型端点。
@@ -20,6 +20,26 @@
    ```bash
    python app.py "手机号13812345678需要掩码" --config custom_config.json
    ```
+
+### 运行 Web 前端 + 后端
+1. 安装依赖：`pip install -r requirements.txt`
+2. 启动服务：`python server.py`（默认监听 `http://0.0.0.0:8000`）
+3. 打开浏览器访问 `http://localhost:8000/`，即可在前端界面体验路由、合规、Prompt 库与发布队列。
+
+**可用 API**（均返回 JSON）：
+- `POST /api/optimize`：请求体 `{ "prompt": "..." }`
+- `GET /api/prompts`、`POST /api/prompts`、`PATCH /api/prompts/<id>`
+- `GET /api/publish`、`POST /api/publish`、`PATCH /api/publish/<id>`、`GET /api/publish/stats`
+
+### 打包为 Windows EXE（可安装分发）
+1. Windows 环境安装 Python 3.9+ 与 `pip install -r requirements.txt pyinstaller`
+2. 在仓库根目录执行：
+   ```powershell
+   pyinstaller --noconfirm --clean --add-data "static;static" --add-data "geo_data;geo_data" server.py -n geo-optimizer
+   ```
+   - `static` 目录会被一并打包，EXE 启动后仍可直接访问前端页面。
+   - 生成文件位于 `dist/geo-optimizer/geo-optimizer.exe`，可直接运行。
+3. 如需自带示例数据，可将 `geo_data/` 复制到同目录或在打包时通过 `--add-data` 携带。
 
 ### 预览示例输出
 不带其他参数直接运行快速预览，或替换自定义提示词：
