@@ -48,6 +48,31 @@
 - `GET /api/prompts`、`POST /api/prompts`、`PATCH /api/prompts/<id>`
 - `GET /api/publish`、`POST /api/publish`、`PATCH /api/publish/<id>`、`GET /api/publish/stats`
 
+### 如何自测/验收
+- **本地离线冒烟**：无需外部模型即可验证核心链路，直接运行
+  ```bash
+  python tests/smoke_tests.py
+  ```
+  脚本会检查路由评分、脱敏缓存、Prompt 库增改查以及发布队列统计，并输出 JSON 结果。
+- **命令行演示**：
+  ```bash
+  python app.py preview --prompt "写一段上海美食探店脚本"
+  python app.py prompt list
+  python app.py publish stats
+  ```
+- **接口回归**：先启动 Web 服务，再调用 REST 接口（示例）：
+  ```bash
+  python server.py  # 新终端中保持运行
+  curl -X POST http://localhost:8000/api/optimize -H "Content-Type: application/json" \
+    -d '{"prompt":"测试手机号13812345678"}'
+  ```
+- **打包产物校验（可选）**：在 Windows 上完成 `python -m installer.build_exe` 后，执行
+  ```powershell
+  .\dist\geo-optimizer\geo-optimizer.exe --version
+  .\dist\geo-optimizer\geo-optimizer.exe preview
+  ```
+  若需要验证 Web UI，双击运行 EXE，确认能访问 `http://localhost:8000/` 且 API 可返回响应。
+
 ### 打包为 Windows EXE（可安装分发）
 1. Windows 环境安装 Python 3.9+，再执行：
    ```powershell
