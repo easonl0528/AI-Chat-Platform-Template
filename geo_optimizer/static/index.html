@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GEO 优化工具 · 演示前端</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>GEO 优化工具</h1>
+      <p>一站式预览路由、合规、Prompt 与发布队列</p>
+    </header>
+
+    <main>
+      <section class="panel">
+        <h2>路由 + 合规预览</h2>
+        <label for="prompt-input">请输入要优化的提示词：</label>
+        <textarea id="prompt-input" placeholder="请写一段关于北京周末亲子活动的推荐"></textarea>
+        <button id="optimize-btn">运行优化</button>
+        <div id="optimize-result" class="result"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Prompt 库</h2>
+        <div class="inline-form">
+          <input id="prompt-title" placeholder="标题，如：节日祝福" />
+          <input id="prompt-category" placeholder="分类，如：节日Prompt" />
+          <input id="prompt-tags" placeholder="标签，空格分隔" />
+        </div>
+        <textarea id="prompt-content" placeholder="输入要新增的 Prompt 内容"></textarea>
+        <button id="add-prompt-btn">新增 Prompt</button>
+        <div id="prompt-list" class="list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>发布看板</h2>
+        <div class="inline-form">
+          <input id="task-prompt-id" placeholder="Prompt ID" />
+          <input id="task-channel" placeholder="渠道，如 公众号" />
+          <input id="task-notes" placeholder="备注（可选）" />
+        </div>
+        <button id="queue-task-btn">创建发布任务</button>
+        <div class="inline-form">
+          <input id="update-task-id" placeholder="任务 ID" />
+          <select id="update-task-status">
+            <option value="queued">queued</option>
+            <option value="sent">sent</option>
+            <option value="failed">failed</option>
+          </select>
+          <button id="update-task-btn">更新状态</button>
+        </div>
+        <div class="kpi">
+          <button id="refresh-stats-btn">刷新统计</button>
+          <div id="publish-stats"></div>
+        </div>
+        <div id="publish-list" class="list"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>启动命令：<code>python server.py</code>（默认端口 8000）</p>
+    </footer>
+
+    <script src="/static/main.js"></script>
+  </body>
+</html>

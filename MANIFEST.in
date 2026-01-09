@@ -1,0 +1,2 @@
+include README.md
+recursive-include geo_optimizer/static *.html *.js *.css

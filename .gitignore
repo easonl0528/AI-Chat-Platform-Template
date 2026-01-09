@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+geo_data/
+!geo_data/.gitkeep
+venv/
+dist/
+build/
+!installer/*.spec
